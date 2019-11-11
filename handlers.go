@@ -12,7 +12,7 @@ import (
 
 func setOrder(w http.ResponseWriter, r *http.Request) {
 	//TODO: http request error code & handling
-	var newOrder order
+	var newOrder Order
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logger.Println("setOrder: error reading data")
@@ -27,7 +27,7 @@ func setOrder(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(reqBody, &newOrder)
 	logger.Println("setOrder: creating order with hash", newOrder.Hash)
-	setOrderDB(newOrder)
+	matching.SetOrderDB(newOrder)
 	
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(newOrder)
@@ -38,7 +38,7 @@ func getOrderByHash(w http.ResponseWriter, r *http.Request) {
 	orderHash := mux.Vars(r)["orderHash"]
 	logger.Println("getOrderByHash: get order", orderHash)
 	
-	result := GetOrderByHashDB(orderHash)
+	result := matching.GetOrderByHashDB(orderHash)
 	json.NewEncoder(w).Encode(result)
 }
 
@@ -48,7 +48,7 @@ func getAssetPairs(w http.ResponseWriter, r *http.Request) {
 	assetDataB := r.URL.Query().Get("assetDataB")
 	logger.Println("getOrderbook: get the orderbook for\n\tassetDataA:", assetDataA)
 
-	result := GetAssetPairsDB(assetDataA, assetDataB)
+	result := matching.GetAssetPairsDB(assetDataA, assetDataB)
 	json.NewEncoder(w).Encode(result)
 }
 
@@ -56,7 +56,7 @@ func getOrders(w http.ResponseWriter, r *http.Request) {
 	//TODO: http request error code & handling
 	logger.Println("getOrderByHash: get the all orders within criteria")
 	
-	result := GetOrdersDB()
+	result := matching.GetOrdersDB()
 	json.NewEncoder(w).Encode(result)
 }
 
@@ -66,7 +66,7 @@ func getOrderbook(w http.ResponseWriter, r *http.Request) {
 	quoteAssetData := r.URL.Query().Get("quoteAssetData")
 	logger.Println("getOrderbook: get the orderbook for\n\tbaseAssetData:", baseAssetData)
 
-	bids, asks := GetOrderbookDB(baseAssetData, quoteAssetData)
+	bids, asks := matching.GetOrderbookDB(baseAssetData, quoteAssetData)
 	result := map[string]Orders{"bids": bids, "asks": asks}
 	json.NewEncoder(w).Encode(result)
 }

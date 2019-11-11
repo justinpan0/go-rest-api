@@ -9,7 +9,7 @@ import (
 
 var logger = log.New(os.Stderr, "Main\t", log.Lshortfile)
 
-type order struct {
+type Order struct {
 	Hash					string	`json:"hash"`
 	MakerAddress			string 	`json:"makerAddress"`
 	TakerAddress 			string 	`json:"takerAddress"`
@@ -30,22 +30,22 @@ type order struct {
 	TakerAssetAmountLeft	string	`json:"takerAssetAmountLeft"`
 }
 
-type Orders []order
+type Orders []Order
 var orderDB = Orders{}
 
-func SetOrderDB(newOrder order) {	
+func SetOrderDB(newOrder Order) {	
 	orderDB = append(orderDB, newOrder)
 	logger.Println("setOrderDB: adding order with hash", newOrder.Hash)
 }
 
-func GetOrderByHashDB(orderHash string) (order) {
+func GetOrderByHashDB(orderHash string) (Order) {
 	for _, singleOrder := range orderDB {
 		if singleOrder.Hash == orderHash {
 			return singleOrder
 		}
 	}
 
-	return order{}
+	return Order{}
 }
 
 func GetAssetPairsDB(assetDataA string, assetDataB string) (Orders) {
