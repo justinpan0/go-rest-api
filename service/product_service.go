@@ -1,8 +1,12 @@
-package main
+package service
 
-import "time"
+import (
+	"time"
 
-func GetProductById(id string) (*Product, error) {
+	"github.com/zimengpan/go-rest-api/models"
+)
+
+func GetProductById(id string) (*models.Product, error) {
 	return &Product{
 		"1",
 		time.Date(2019, time.November, 10, 23, 0, 0, 0, time.UTC),
@@ -15,8 +19,8 @@ func GetProductById(id string) (*Product, error) {
 	//return mysql.SharedStore().GetProductById(id)
 }
 
-func GetProducts() ([]*Product, error) {
-	return []*Product{&Product{
+func GetProducts() ([]*models.Product, error) {
+	return []*models.Product{&models.Product{
 		"1",
 		time.Date(2019, time.November, 10, 23, 0, 0, 0, time.UTC),
 		time.Date(2019, time.November, 10, 23, 0, 0, 0, time.UTC),

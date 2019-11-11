@@ -15,7 +15,6 @@
 package matching
 
 import (
-	"github.com/zimengpan/go-rest-api/main"
 	logger "github.com/siddontang/go-log/log"
 	"time"
 )

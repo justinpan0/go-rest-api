@@ -2,11 +2,11 @@ package matching
 
 import (
 	logger "github.com/siddontang/go-log/log"
-	"github.com/zimengpan/go-rest-api/main"
+	"github.com/zimengpan/go-rest-api/service"
 )
 
 func StartEngine() {
-	products, err := main.GetProducts()
+	products, err := service.GetProducts()
 	if err != nil {
 		panic(err)
 	}
