@@ -12,6 +12,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/segmentio/kafka-go"
 	"github.com/zimengpan/go-rest-api/matching"
+	"github.com/zimengpan/go-rest-api/service"
 )
 
 var productId2Writer sync.Map
@@ -50,9 +51,8 @@ func setOrder(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(reqBody, &newOrder)
 	logger.Println("setOrder: submit order with hash", newOrder.Hash)
-	product, err := GetProductById(productId)
-	if (newOrder.MakerAssetData != product.BaseAssetData || newOrder.TakerAssetData != product.QuoteAssetData)
-	&& (newOrder.TakerAssetData != product.BaseAssetData || newOrder.MakerAssetData != product.QuoteAssetData){
+	product, err := service.GetProductById(productId)
+	if (newOrder.MakerAssetData != product.BaseAssetData || newOrder.TakerAssetData != product.QuoteAssetData) && (newOrder.TakerAssetData != product.BaseAssetData || newOrder.MakerAssetData != product.QuoteAssetData) {
 		logger.Fatalln("setOrder: productId and asset pairs unmatched")
 		return
 	}

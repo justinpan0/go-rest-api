@@ -117,6 +117,7 @@ func (e *Engine) runFetcher() {
 			continue
 		}
 		e.orderCh <- &offsetOrder{offset, order}
+		SetOrderDB(order)
 	}
 }
 
@@ -125,6 +126,12 @@ func (e *Engine) runFetcher() {
 	var orderOffset int64
 
 	for {
+		var logs []Log
+		if offsetOrder.Order.Status == models.OrderStatusCancelling {
+			logs = e.OrderBook.CancelOrder(offsetOrder.Order)
+		} else {
+			logs = e.OrderBook.ApplyOrder(offsetOrder.Order)
+		}
 		select {
 		case offsetOrder := <-e.orderCh:
 			// put or cancel order
