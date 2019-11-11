@@ -12,7 +12,7 @@ import (
 
 func setOrder(w http.ResponseWriter, r *http.Request) {
 	//TODO: http request error code & handling
-	var newOrder Order
+	var newOrder matching.Order
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logger.Println("setOrder: error reading data")
@@ -67,7 +67,7 @@ func getOrderbook(w http.ResponseWriter, r *http.Request) {
 	logger.Println("getOrderbook: get the orderbook for\n\tbaseAssetData:", baseAssetData)
 
 	bids, asks := matching.GetOrderbookDB(baseAssetData, quoteAssetData)
-	result := map[string]Orders{"bids": bids, "asks": asks}
+	result := map[string]matching.Orders{"bids": bids, "asks": asks}
 	json.NewEncoder(w).Encode(result)
 }
 
