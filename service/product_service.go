@@ -7,7 +7,7 @@ import (
 )
 
 func GetProductById(id string) (*models.Product, error) {
-	return &Product{
+	return &models.Product{
 		"1",
 		time.Date(2019, time.November, 10, 23, 0, 0, 0, time.UTC),
 		time.Date(2019, time.November, 10, 23, 0, 0, 0, time.UTC),
