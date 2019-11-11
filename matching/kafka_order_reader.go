@@ -19,7 +19,7 @@ func NewKafkaOrderReader(productId string, brokers []string) *KafkaOrderReader {
 	s := &KafkaOrderReader{}
 
 	s.orderReader = kafka.NewReader(kafka.ReaderConfig{
-		Brokers:   []string{"localhost:9092"},
+		Brokers:   brokers,
 		Topic:     "matching_order_" + productId,
 		Partition: 0,
 		MinBytes:  1,

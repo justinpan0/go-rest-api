@@ -51,7 +51,8 @@ func setOrder(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, &newOrder)
 	logger.Println("setOrder: submit order with hash", newOrder.Hash)
 	product, err := GetProductById(productId)
-	if newOrder.MakerAssetData != product.BaseAssetData || newOrder.TakerAssetData != product.QuoteAssetData {
+	if (newOrder.MakerAssetData != product.BaseAssetData || newOrder.TakerAssetData != product.QuoteAssetData)
+	&& (newOrder.TakerAssetData != product.BaseAssetData || newOrder.MakerAssetData != product.QuoteAssetData){
 		logger.Fatalln("setOrder: productId and asset pairs unmatched")
 		return
 	}

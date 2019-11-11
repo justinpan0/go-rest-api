@@ -16,7 +16,7 @@ package matching
 
 import (
 	logger "github.com/siddontang/go-log/log"
-	"time"
+	"github.com/zimengpan/go-rest-api/models"
 )
 
 type Engine struct {
@@ -24,7 +24,8 @@ type Engine struct {
 	productId string
 
 	// engine持有的orderBook，和product对应，需要快照，并从快照中恢复
-	OrderBook *orderBook
+	//OrderBook *orderBook
+	orderDB Orders
 
 	// 用于读取order
 	orderReader OrderReader
@@ -39,54 +40,55 @@ type Engine struct {
 	//logStore LogStore
 
 	// log写入队列，所有待写入的log需要进入该chan等待
-	logCh chan Log
+	//logCh chan Log
 
 	// 发起snapshot请求，需要携带最后一次snapshot的offset
-	snapshotReqCh chan *Snapshot
+	//snapshotReqCh chan *Snapshot
 
 	// snapshot已经完全准备好，需要确保snapshot之前的所有数据都已经提交
-	snapshotApproveReqCh chan *Snapshot
+	//snapshotApproveReqCh chan *Snapshot
 
 	// snapshot数据准备好并且snapshot之前的所有数据都已经提交
-	snapshotCh chan *Snapshot
+	//snapshotCh chan *Snapshot
 
 	// 持久化snapshot的存储方式，应该支持多种方式，如本地磁盘，redis等
 	//snapshotStore SnapshotStore
 }
 
 // 快照是engine在某一时候的一致性内存状态
-type Snapshot struct {
+/*type Snapshot struct {
 	OrderBookSnapshot orderBookSnapshot
 	OrderOffset       int64
-}
+}*/
 
 type offsetOrder struct {
 	Offset int64
-	Order  *models.Order
+	Order  *Order
 }
 
-func NewEngine(product *models.Product, orderReader OrderReader, logStore LogStore, snapshotStore SnapshotStore) *Engine {
+func NewEngine(product *models.Product, orderReader OrderReader) *Engine {
 	e := &Engine{
-		productId:            product.Id,
-		OrderBook:            NewOrderBook(product),
-		logCh:                make(chan Log, 10000),
-		orderCh:              make(chan *offsetOrder, 10000),
-		snapshotReqCh:        make(chan *Snapshot, 32),
-		snapshotApproveReqCh: make(chan *Snapshot, 32),
-		snapshotCh:           make(chan *Snapshot, 32),
+		productId: product.Id,
+		//OrderBook:            NewOrderBook(product),
+		orderDB: Orders{},
+		//logCh:                make(chan Log, 10000),
+		orderCh: make(chan *offsetOrder, 10000),
+		//snapshotReqCh:        make(chan *Snapshot, 32),
+		//snapshotApproveReqCh: make(chan *Snapshot, 32),
+		//snapshotCh:           make(chan *Snapshot, 32),
 		//snapshotStore:        snapshotStore,
-		orderReader:          orderReader,
+		orderReader: orderReader,
 		//logStore:             logStore,
 	}
 
 	// 获取最新的snapshot，并使用snapshot进行恢复
-	snapshot, err := snapshotStore.GetLatest()
+	/*snapshot, err := snapshotStore.GetLatest()
 	if err != nil {
 		logger.Fatalf("get latest snapshot error: %v", err)
 	}
 	if snapshot != nil {
 		e.restore(snapshot)
-	}
+	}*/
 	return e
 }
 
@@ -119,7 +121,7 @@ func (e *Engine) runFetcher() {
 }
 
 // 从本地队列获取order，执行orderBook操作，同时要响应snapshot请求
-func (e *Engine) runApplier() {
+/*func (e *Engine) runApplier() {
 	var orderOffset int64
 
 	for {
@@ -157,10 +159,10 @@ func (e *Engine) runApplier() {
 			e.snapshotApproveReqCh <- snapshot
 		}
 	}
-}
+}*/
 
 // 将orderBook产生的log进行持久化，同时需要响应snapshot审批
-func (e *Engine) runCommitter() {
+/*func (e *Engine) runCommitter() {
 	var seq = e.OrderBook.logSeq
 	var pending *Snapshot = nil
 	var logs []interface{}
@@ -211,10 +213,10 @@ func (e *Engine) runCommitter() {
 			pending = snapshot
 		}
 	}
-}
+}*/
 
 // 定时发起快照请求，同时负责持久化通过审批的快照
-func (e *Engine) runSnapshots() {
+/*func (e *Engine) runSnapshots() {
 	// 最后一次快照时的order orderOffset
 	orderOffset := e.orderOffset
 
@@ -245,4 +247,6 @@ func (e *Engine) runSnapshots() {
 func (e *Engine) restore(snapshot *Snapshot) {
 	logger.Infof("restoring: %+v", *snapshot)
 	e.orderOffset = snapshot.OrderOffset
-	e.OrderBook.Restore(&snapshot.OrderBookSnap
+	e.OrderBook.Restore(&snapshot.OrderBookSnap)
+}
+*/

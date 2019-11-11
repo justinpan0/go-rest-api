@@ -11,10 +11,10 @@ func StartEngine() {
 		panic(err)
 	}
 	for _, product := range products {
-		orderReader := NewKafkaOrderReader(product.Id, gbeConfig.Kafka.Brokers)
+		orderReader := NewKafkaOrderReader(product.Id, []string{"localhost:9092"})
 		//snapshotStore := NewRedisSnapshotStore(product.Id)
 		//logStore := NewKafkaLogStore(product.Id, gbeConfig.Kafka.Brokers)
-		matchEngine := NewEngine(product, orderReader, logStore, snapshotStore)
+		matchEngine := NewEngine(product, orderReader)
 		matchEngine.Start()
 	}
 
