@@ -1,9 +1,13 @@
 package matching
 
 import (
+	"os"
+	"log"
 	//"github.com/timtadh/data-structures/hashtable"
 	//"github.com/jupp0r/go-priority-queue"
 )
+
+var logger = log.New(os.Stderr, "Main\t", log.Lshortfile)
 
 type order struct {
 	Hash					string	`json:"hash"`
