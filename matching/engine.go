@@ -93,6 +93,7 @@ func NewEngine(product *models.Product, orderReader OrderReader) *Engine {
 }
 
 func (e *Engine) Start() {
+	logger.Info("Engine start")
 	go e.runFetcher()
 	//go e.runApplier()
 	//go e.runCommitter()
@@ -117,6 +118,7 @@ func (e *Engine) runFetcher() {
 			continue
 		}
 		e.orderCh <- &offsetOrder{offset, order}
+		logger.Info(".")
 		SetOrderDB(*order)
 	}
 }
