@@ -80,7 +80,7 @@ func NewEngine(product *models.Product, orderReader OrderReader) *Engine {
 		orderReader: orderReader,
 		//logStore:             logStore,
 	}
-
+	logger.Info("new engine ", product.Id)
 	// 获取最新的snapshot，并使用snapshot进行恢复
 	/*snapshot, err := snapshotStore.GetLatest()
 	if err != nil {

@@ -16,7 +16,9 @@ func StartEngine() {
 		orderReader := NewKafkaOrderReader(product.Id, []string{"localhost:9092"})
 		//snapshotStore := NewRedisSnapshotStore(product.Id)
 		//logStore := NewKafkaLogStore(product.Id, gbeConfig.Kafka.Brokers)
+		logger.Info("new engine ", product.Id)
 		matchEngine := NewEngine(product, orderReader)
+		logger.Info("match engine start ", product.Id)
 		matchEngine.Start()
 	}
 
