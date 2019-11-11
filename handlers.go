@@ -38,7 +38,7 @@ func getOrderByHash(w http.ResponseWriter, r *http.Request) {
 	orderHash := mux.Vars(r)["orderHash"]
 	logger.Println("getOrderByHash: get order", orderHash)
 	
-	result := getOrderByHashDB(orderHash)
+	result := GetOrderByHashDB(orderHash)
 	json.NewEncoder(w).Encode(result)
 }
 
@@ -48,7 +48,7 @@ func getAssetPairs(w http.ResponseWriter, r *http.Request) {
 	assetDataB := r.URL.Query().Get("assetDataB")
 	logger.Println("getOrderbook: get the orderbook for\n\tassetDataA:", assetDataA)
 
-	result := getAssetPairsDB(assetDataA, assetDataB)
+	result := GetAssetPairsDB(assetDataA, assetDataB)
 	json.NewEncoder(w).Encode(result)
 }
 
@@ -56,7 +56,7 @@ func getOrders(w http.ResponseWriter, r *http.Request) {
 	//TODO: http request error code & handling
 	logger.Println("getOrderByHash: get the all orders within criteria")
 	
-	result := getOrdersDB()
+	result := GetOrdersDB()
 	json.NewEncoder(w).Encode(result)
 }
 
@@ -66,7 +66,7 @@ func getOrderbook(w http.ResponseWriter, r *http.Request) {
 	quoteAssetData := r.URL.Query().Get("quoteAssetData")
 	logger.Println("getOrderbook: get the orderbook for\n\tbaseAssetData:", baseAssetData)
 
-	bids, asks := getOrderbookDB(baseAssetData, quoteAssetData)
+	bids, asks := GetOrderbookDB(baseAssetData, quoteAssetData)
 	result := map[string]Orders{"bids": bids, "asks": asks}
 	json.NewEncoder(w).Encode(result)
 }

@@ -33,12 +33,12 @@ type order struct {
 type Orders []order
 var orderDB = Orders{}
 
-func setOrderDB(newOrder order) {	
+func SetOrderDB(newOrder order) {	
 	orderDB = append(orderDB, newOrder)
 	logger.Println("setOrderDB: adding order with hash", newOrder.Hash)
 }
 
-func getOrderByHashDB(orderHash string) (order) {
+func GetOrderByHashDB(orderHash string) (order) {
 	for _, singleOrder := range orderDB {
 		if singleOrder.Hash == orderHash {
 			return singleOrder
@@ -48,7 +48,7 @@ func getOrderByHashDB(orderHash string) (order) {
 	return order{}
 }
 
-func getAssetPairsDB(assetDataA string, assetDataB string) (Orders) {
+func GetAssetPairsDB(assetDataA string, assetDataB string) (Orders) {
 	//TODO: Implement Paginator
 	var result = Orders{}
 	for _, singleOrder := range orderDB {
@@ -59,13 +59,13 @@ func getAssetPairsDB(assetDataA string, assetDataB string) (Orders) {
 	return result
 }
 
-func getOrdersDB() (Orders) {
+func GetOrdersDB() (Orders) {
 	//TODO: Implement Paginator
 	logger.Println("getOrdersDB: getting orderDB")
 	return orderDB
 }
 
-func getOrderbookDB(baseAssetData string, quoteAssetData string) (Orders, Orders) {
+func GetOrderbookDB(baseAssetData string, quoteAssetData string) (Orders, Orders) {
 	//TODO: Implement Paginator
 	var bids = Orders{}
 	var asks = Orders{}
