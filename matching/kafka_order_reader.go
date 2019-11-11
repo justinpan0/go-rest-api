@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/segmentio/kafka-go"
+	logger "github.com/siddontang/go-log/log"
 )
 
 const (

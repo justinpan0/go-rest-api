@@ -117,7 +117,7 @@ func (e *Engine) runFetcher() {
 			continue
 		}
 		e.orderCh <- &offsetOrder{offset, order}
-		SetOrderDB(order)
+		SetOrderDB(*order)
 	}
 }
 
