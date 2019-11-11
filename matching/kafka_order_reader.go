@@ -34,6 +34,8 @@ func (s *KafkaOrderReader) SetOffset(offset int64) error {
 }
 
 func (s *KafkaOrderReader) FetchOrder() (offset int64, order *Order, err error) {
+	logger.Info("fetch order ", newOrder.Hash)
+
 	message, err := s.orderReader.FetchMessage(context.Background())
 	if err != nil {
 		return 0, nil, err

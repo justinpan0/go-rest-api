@@ -117,9 +117,9 @@ func (e *Engine) runFetcher() {
 			logger.Error(err)
 			continue
 		}
-		e.orderCh <- &offsetOrder{offset, order}
 		logger.Info(".")
 		SetOrderDB(*order)
+		e.orderCh <- &offsetOrder{offset, order}
 	}
 }
 
