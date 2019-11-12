@@ -19,42 +19,49 @@ import (
 var productID2Writer sync.Map
 
 func getWriter(productID string) *kafka.Writer {
-	writer, found := productID2Writer.Load(productId)
+	writer, found := productID2Writer.Load(productID)
 	if found {
 		return writer.(*kafka.Writer)
 	}
 
 	newWriter := kafka.NewWriter(kafka.WriterConfig{
 		Brokers:      []string{"localhost:9092"},
-		Topic:        "matching_order_" + productId,
+		Topic:        "matching_order_" + productID,
 		Balancer:     &kafka.LeastBytes{},
 		BatchTimeout: 5 * time.Millisecond,
 	})
-	productID2Writer.Store(productId, newWriter)
+	productID2Writer.Store(productID, newWriter)
 	return newWriter
 }
 
 func setOrder(w http.ResponseWriter, r *http.Request) {
 	//TODO: http request error code & handling
-	productID := mux.Vars(r)["productId"]
+	productID := mux.Vars(r)["productID"]
 	var newOrder matching.Order
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logger.Fatalln("setOrder: error reading data")
 		return
 	}
+
 	// validate order
 	if err, _ := rs.ValidateBytes(reqBody); len(err) > 0 {
 		logger.Fatalln("setOrder: invalid order data")
+		return
+	}
+	// validate product
+	product, err := service.GetProductByID(productID)
+	if err != nil {
+		logger.Fatalln("setOrder: invalid product")
 		return
 	}
 
 	//TODO: Validate account allowance and balance
 	json.Unmarshal(reqBody, &newOrder)
 	logger.Info("setOrder: submit order with hash", newOrder.Hash)
-	product, err := service.GetProductByID(productID)
+
 	if (newOrder.MakerAssetData != product.BaseAssetData || newOrder.TakerAssetData != product.QuoteAssetData) && (newOrder.TakerAssetData != product.BaseAssetData || newOrder.MakerAssetData != product.QuoteAssetData) {
-		logger.Fatal("setOrder: productId and asset pairs unmatched")
+		logger.Fatal("setOrder: productID and asset pairs unmatched")
 		return
 	}
 	logger.Info("setOrder: pair ", product.BaseCurrency, product.QuoteCurrency)

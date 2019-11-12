@@ -17,7 +17,7 @@ func main() {
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/", homeLink)
-	router.HandleFunc("/v1/order/{productId}", setOrder)
+	router.HandleFunc("/v1/order/{productID}", setOrder)
 	router.HandleFunc("/v1/orders/{orderHash}", getOrderByHash)
 	router.HandleFunc("/v1/orders", getOrders)
 	router.HandleFunc("/v1/orderbook", getOrderbook)

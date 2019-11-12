@@ -21,7 +21,7 @@ type KafkaOrderReader struct {
 //NewKafkaOrderReader intialize new kafka order reader
 func NewKafkaOrderReader(productID string, brokers []string) *KafkaOrderReader {
 	s := &KafkaOrderReader{}
-	logger.Println("NewKafkaOrderReader: consume kafka order stream", "matching_order_"+productId)
+	logger.Println("NewKafkaOrderReader: consume kafka order stream", "matching_order_"+productID)
 	s.orderReader = kafka.NewReader(kafka.ReaderConfig{
 		Brokers:   brokers,
 		Topic:     "matching_order_" + productID,
