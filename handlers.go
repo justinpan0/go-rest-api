@@ -11,6 +11,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/segmentio/kafka-go"
+	logger "github.com/siddontang/go-log/log"
 	"github.com/zimengpan/go-rest-api/matching"
 	"github.com/zimengpan/go-rest-api/service"
 )
@@ -50,17 +51,17 @@ func setOrder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.Unmarshal(reqBody, &newOrder)
-	logger.Println("setOrder: submit order with hash", newOrder.Hash)
+	logger.Info("setOrder: submit order with hash", newOrder.Hash)
 	product, err := service.GetProductById(productId)
 	if (newOrder.MakerAssetData != product.BaseAssetData || newOrder.TakerAssetData != product.QuoteAssetData) && (newOrder.TakerAssetData != product.BaseAssetData || newOrder.MakerAssetData != product.QuoteAssetData) {
-		logger.Fatalln("setOrder: productId and asset pairs unmatched")
+		logger.Fatal("setOrder: productId and asset pairs unmatched")
 		return
 	}
-	logger.Println("setOrder: pair ", product.BaseCurrency, product.QuoteCurrency)
+	logger.Info("setOrder: pair ", product.BaseCurrency, product.QuoteCurrency)
 
 	err = getWriter(productId).WriteMessages(context.Background(), kafka.Message{Value: reqBody})
 	if err != nil {
-		logger.Fatalln(err)
+		logger.Fatal(err)
 	}
 
 	w.WriteHeader(http.StatusCreated)
@@ -70,7 +71,7 @@ func setOrder(w http.ResponseWriter, r *http.Request) {
 func getOrderByHash(w http.ResponseWriter, r *http.Request) {
 	//TODO: http request error code & handling
 	orderHash := mux.Vars(r)["orderHash"]
-	logger.Println("getOrderByHash: get order", orderHash)
+	logger.Info("getOrderByHash: get order", orderHash)
 
 	result := matching.GetOrderByHashDB(orderHash)
 	json.NewEncoder(w).Encode(result)
@@ -80,7 +81,7 @@ func getAssetPairs(w http.ResponseWriter, r *http.Request) {
 	//TODO: http request error code & handling
 	assetDataA := r.URL.Query().Get("assetDataA")
 	assetDataB := r.URL.Query().Get("assetDataB")
-	logger.Println("getOrderbook: get the orderbook for\n\tassetDataA:", assetDataA)
+	logger.Info("getOrderbook: get the orderbook for\n\tassetDataA:", assetDataA)
 
 	result := matching.GetAssetPairsDB(assetDataA, assetDataB)
 	json.NewEncoder(w).Encode(result)
@@ -88,7 +89,7 @@ func getAssetPairs(w http.ResponseWriter, r *http.Request) {
 
 func getOrders(w http.ResponseWriter, r *http.Request) {
 	//TODO: http request error code & handling
-	logger.Println("getOrderByHash: get the all orders within criteria")
+	logger.Info("getOrderByHash: get the all orders within criteria")
 
 	result := matching.GetOrdersDB()
 	json.NewEncoder(w).Encode(result)
@@ -98,7 +99,7 @@ func getOrderbook(w http.ResponseWriter, r *http.Request) {
 	//TODO: http request error code & handling
 	baseAssetData := r.URL.Query().Get("baseAssetData")
 	quoteAssetData := r.URL.Query().Get("quoteAssetData")
-	logger.Println("getOrderbook: get the orderbook for\n\tbaseAssetData:", baseAssetData)
+	logger.Info("getOrderbook: get the orderbook for\n\tbaseAssetData:", baseAssetData)
 
 	bids, asks := matching.GetOrderbookDB(baseAssetData, quoteAssetData)
 	result := map[string]matching.Orders{"bids": bids, "asks": asks}
