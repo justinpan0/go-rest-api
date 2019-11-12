@@ -6,7 +6,8 @@ import (
 	"github.com/zimengpan/go-rest-api/models"
 )
 
-func GetProductById(id string) (*models.Product, error) {
+//GetProductByID get product by productID
+func GetProductByID(id string) (*models.Product, error) {
 	return &models.Product{
 		"1",
 		time.Date(2019, time.November, 10, 23, 0, 0, 0, time.UTC),
@@ -19,6 +20,7 @@ func GetProductById(id string) (*models.Product, error) {
 	//return mysql.SharedStore().GetProductById(id)
 }
 
+//GetProducts get all products
 func GetProducts() ([]*models.Product, error) {
 	return []*models.Product{&models.Product{
 		"1",

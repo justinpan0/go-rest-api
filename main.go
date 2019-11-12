@@ -15,8 +15,6 @@ func main() {
 	logger.Info("Boomflow starts")
 
 	router := mux.NewRouter().StrictSlash(true)
-	//router.HandleFunc("/v1/asset_pairs")
-	//router.HandleFunc("/v1/orders")
 
 	router.HandleFunc("/", homeLink)
 	router.HandleFunc("/v1/order/{productId}", setOrder)

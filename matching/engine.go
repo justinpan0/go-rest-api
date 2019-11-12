@@ -19,9 +19,10 @@ import (
 	"github.com/zimengpan/go-rest-api/models"
 )
 
+//Engine engine type
 type Engine struct {
-	// productId是一个engine的唯一标识，每个product都会对应一个engine
-	productId string
+	// productID是一个engine的唯一标识，每个product都会对应一个engine
+	productID string
 
 	// engine持有的orderBook，和product对应，需要快照，并从快照中恢复
 	//OrderBook *orderBook
@@ -66,9 +67,10 @@ type offsetOrder struct {
 	Order  *Order
 }
 
+//NewEngine Intialize a new matching engine
 func NewEngine(product *models.Product, orderReader OrderReader) *Engine {
 	e := &Engine{
-		productId: product.Id,
+		productID: product.ID,
 		//OrderBook:            NewOrderBook(product),
 		orderDB: Orders{},
 		//logCh:                make(chan Log, 10000),
@@ -80,7 +82,7 @@ func NewEngine(product *models.Product, orderReader OrderReader) *Engine {
 		orderReader: orderReader,
 		//logStore:             logStore,
 	}
-	logger.Info("new engine ", product.Id)
+	logger.Info("new engine ", product.ID)
 	// 获取最新的snapshot，并使用snapshot进行恢复
 	/*snapshot, err := snapshotStore.GetLatest()
 	if err != nil {
@@ -92,6 +94,7 @@ func NewEngine(product *models.Product, orderReader OrderReader) *Engine {
 	return e
 }
 
+//Start start an engine
 func (e *Engine) Start() {
 	logger.Info("Engine start")
 	go e.runFetcher()

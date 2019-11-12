@@ -1,6 +1,6 @@
 package matching
 
-// 用于撮合引擎读取order，需要支持设置offset，从指定的offset开始读取
+//OrderReader 用于撮合引擎读取order，需要支持设置offset，从指定的offset开始读取
 type OrderReader interface {
 	// 设置读取的起始offset
 	SetOffset(offset int64) error

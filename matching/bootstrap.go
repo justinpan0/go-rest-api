@@ -5,6 +5,7 @@ import (
 	"github.com/zimengpan/go-rest-api/service"
 )
 
+//StartEngine bootstrap to start matching engine service
 func StartEngine() {
 	products, err := service.GetProducts()
 	if err != nil {
@@ -12,13 +13,13 @@ func StartEngine() {
 	}
 	logger.Info("total products ", products)
 	for _, product := range products {
-		logger.Info("initialize kafka order reader for product ", product.Id)
-		orderReader := NewKafkaOrderReader(product.Id, []string{"localhost:9092"})
+		logger.Info("initialize kafka order reader for product ", product.ID)
+		orderReader := NewKafkaOrderReader(product.ID, []string{"localhost:9092"})
 		//snapshotStore := NewRedisSnapshotStore(product.Id)
 		//logStore := NewKafkaLogStore(product.Id, gbeConfig.Kafka.Brokers)
-		logger.Info("new engine ", product.Id)
+		logger.Info("new engine ", product.ID)
 		matchEngine := NewEngine(product, orderReader)
-		logger.Info("match engine start ", product.Id)
+		logger.Info("match engine start ", product.ID)
 		matchEngine.Start()
 	}
 

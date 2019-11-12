@@ -2,8 +2,9 @@ package models
 
 import "time"
 
+//Product struct for Product
 type Product struct {
-	Id             string `gorm:"column:id;primary_key"`
+	ID             string `gorm:"column:id;primary_key"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 	BaseCurrency   string

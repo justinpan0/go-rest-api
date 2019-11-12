@@ -9,19 +9,22 @@ import (
 )
 
 const (
+	//TopicOrderPrefix prefix for kafka topics of orders
 	TopicOrderPrefix = "matching_order_"
 )
 
+//KafkaOrderReader struct for kafka order reader
 type KafkaOrderReader struct {
 	orderReader *kafka.Reader
 }
 
-func NewKafkaOrderReader(productId string, brokers []string) *KafkaOrderReader {
+//NewKafkaOrderReader intialize new kafka order reader
+func NewKafkaOrderReader(productID string, brokers []string) *KafkaOrderReader {
 	s := &KafkaOrderReader{}
 	logger.Println("NewKafkaOrderReader: consume kafka order stream", "matching_order_"+productId)
 	s.orderReader = kafka.NewReader(kafka.ReaderConfig{
 		Brokers:   brokers,
-		Topic:     "matching_order_" + productId,
+		Topic:     "matching_order_" + productID,
 		Partition: 0,
 		MinBytes:  1,
 		MaxBytes:  10e6,
@@ -29,10 +32,12 @@ func NewKafkaOrderReader(productId string, brokers []string) *KafkaOrderReader {
 	return s
 }
 
+//SetOffset set the offset of order reader
 func (s *KafkaOrderReader) SetOffset(offset int64) error {
 	return s.orderReader.SetOffset(offset)
 }
 
+//FetchOrder fetch order based on offset
 func (s *KafkaOrderReader) FetchOrder() (offset int64, order *Order, err error) {
 	message, err := s.orderReader.FetchMessage(context.Background())
 	if err != nil {
