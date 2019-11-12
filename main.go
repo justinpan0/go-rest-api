@@ -22,7 +22,7 @@ func main() {
 	//router.HandleFunc("/v1/orders")
 
 	router.HandleFunc("/", homeLink)
-	router.HandleFunc("/v1/order", setOrder)
+	router.HandleFunc("/v1/order/{productId}", setOrder)
 	router.HandleFunc("/v1/order/{orderHash}", getOrderByHash)
 	router.HandleFunc("/v1/orders", getOrders)
 	router.HandleFunc("/v1/orderbook", getOrderbook)

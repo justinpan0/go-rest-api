@@ -34,20 +34,16 @@ func (s *KafkaOrderReader) SetOffset(offset int64) error {
 }
 
 func (s *KafkaOrderReader) FetchOrder() (offset int64, order *Order, err error) {
-	logger.Info("fetch order")
-
 	message, err := s.orderReader.FetchMessage(context.Background())
-	logger.Info("after fetch order")
 	if err != nil {
 		return 0, nil, err
 	}
-	logger.Info("commit message")
-	s.orderReader.CommitMessages(context.Background(), message)
-	logger.Info("after commit messsage")
+
+	//s.orderReader.CommitMessages(context.Background(), message)
 	err = json.Unmarshal(message.Value, &order)
 	if err != nil {
 		return 0, nil, err
 	}
-	logger.Info("fetch order end")
+
 	return message.Offset, order, nil
 }
