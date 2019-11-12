@@ -1,37 +1,33 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/gitbitex/gitbitex-spot)](https://goreportcard.com/report/github.com/gitbitex/gitbitex-spot)
+[![Go Report Card](https://goreportcard.com/badge/github.com/zimengpan/go-rest-api)](https://goreportcard.com/report/github.com/zimengpan/go-rest-api)
 
-GitBitEx is an open source cryptocurrency exchange.
+This is an implementation of Boomflow cryptocurrency exchange. The project meant to build a Distributed Exchange with Matching strategy. 
 
-## Architecture
-<p align="center"><img width="100%" src="https://oooooo.oss-cn-hangzhou.aliyuncs.com/gitbitex.png?v=1" /></p>
+As pointed by 0x Documentation:
+```
+A relayer may chose to accept and broadcast orders where the taker field is equal to an address controlled by the relayer. When the relayer receives two orders on opposite sides of the market with overlapping prices, the relayer can call matchOrders to atomically match both orders
+```
+**Benefits**
+1. Remove the primary race condition in matching proceess from the root, because only the matcher is allowed to fill each order
+2. Respond instantly when orders are matched and the orderbook gets upated as soon as the transaction is submitted, allowing for a more real-time trading experience
+3. Moves all gas costs to the matcher and potentially provide a better UX for traders
 
-## Demo
-We deployed a demo version on a cloud server (2 Cores CPU 4G RAM). All programs run on this server. include (mysql,kafka,redis,gitbitex-spot,nginx,web...).
+**Trust**
 
-https://gitbitex.com:8080/trade/BTC-USDT
+The matcher endpoint is hosted by Conflux Foundation. It adds an element of trust. Conflux Foundation is incentivized to match orders without fees and/or arbitrage opportunities
+
+## <s>Architecture</s>
+
+
+## Open Source
+The structure and codebase of the exchange is forked from GitBitEx, an open source cryptocurrency exchange.
 
 ## Dependencies
-* MySql (**BINLOG[ROW format]** enabled)
+* <s>MySql (**BINLOG[ROW format]** enabled)</s>
 * Kafka
-* Redis
+* <s>Redis</s>
 
 ## Install
 ### Server
-* git clone https://github.com/gitbitex/gitbitex-spot.git
-* Create database and make sure **BINLOG[ROW format]** enabled
-* Execute ddl.sql
-* Modify conf.json
+* git clone the repo
 * Run go build
-* Run ./gitbitex-spot
-### Web
-* git clone https://github.com/gitbitex/gitbitex-web.git
-* Run `npm install`
-* Run `npm start`
-* Run `npm run build` to build production
-
-
-## Questions?
-Please let me know if you have any questions. You can submit an issue or send me an email (greensheng2001@gmail.com) or Telegram (https://t.me/greensheng)
-
-## Contributing
-This project welcomes contributions and suggestions and we are excited to work with the power user community to build the best exchange in the world
+* Run ./go-rest-api
