@@ -6,6 +6,8 @@ import (
 	//"github.com/jupp0r/go-priority-queue"
 )
 
+//TODO:: Add OrderBook struct
+
 type Order struct {
 	Hash                  string `json:"hash"`
 	MakerAddress          string `json:"makerAddress"`

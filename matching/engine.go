@@ -95,8 +95,12 @@ func NewEngine(product *models.Product, orderReader OrderReader) *Engine {
 func (e *Engine) Start() {
 	logger.Info("Engine start")
 	go e.runFetcher()
+
+	//TODO: Enable applier logic
 	//go e.runApplier()
 	//go e.runCommitter()
+
+	//TODO: Enable snapshot
 	//go e.runSnapshots()
 }
 

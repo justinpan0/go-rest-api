@@ -50,6 +50,7 @@ func setOrder(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	//TODO: Validate account allowance and balance
 	json.Unmarshal(reqBody, &newOrder)
 	logger.Info("setOrder: submit order with hash", newOrder.Hash)
 	product, err := service.GetProductById(productId)
